@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { existeProductoPorId } from "../helpers/validator";
+
 import { v4 as uuidv4 } from 'uuid';
 
 import Producto from '../models/Producto'
@@ -7,15 +7,9 @@ import Producto from '../models/Producto'
 const product = new Producto()
 
 export const getProducts = (req:Request,res:Response) => {
-
+    
     const productos =  product.leer()
-
-    if(productos !== []) {
-        res.json({
-            msg:'No hay productos disponibles'
-        })
-    }
-
+    
      res.json({
            productos
      }) 
@@ -24,32 +18,30 @@ export const getProducts = (req:Request,res:Response) => {
 
 export const getProduct = (req:Request,res:Response) => {
 
-    const {id} = req.params
+    const id = Number(req.params.id)
 
     const productos =  product.leer()
 
-    if(productos !== []) {
-        res.json({
-            msg:'No hay productos disponibles'
-        })
-    }
+    const productoPorId = productos.find((producto:{id:number}) => producto.id === id)
 
-    else {
-       const producto = existeProductoPorId(productos,id)
-       if(typeof producto)
-
-    }
+    res.json({
+        productoPorId
+    })
 
 }
 
 export const putProduct = (req:Request,res:Response) => {
-    const {id} = req.params
+
+    const id = Number(req.params.id)
 
     const {nombre,descripcion,codigo,foto,precio,stock} = req.body
 
-    product.actualizarProducto(nombre,descripcion,codigo,foto,precio,stock,id)
+    const productoActualizado = product.actualizarProducto(nombre,descripcion,codigo,foto,precio,stock,id)
     
-
+     res.json({
+         msg: 'Producto actualizado existosamente',
+         productoActualizado
+     })
 
 
 
@@ -58,27 +50,24 @@ export const putProduct = (req:Request,res:Response) => {
 export const postProduct = (req:Request,res:Response) => {
     const producto = req.body
 
-    const prod = {id:uuidv4(),timestamp:Date.now(),...producto}
 
-    product.guardar(prod)
+    product.guardar(producto)
 
     res.json({
         msg:'Producto agregado exitosamente',
-        prod
+        
     })
-
-    
-
-
 
 }
 
 export const deleteProductFromList = (req:Request,res:Response) => {
-    const {id} = req.params
+    const id = Number(req.params.id)
+    
 
     const productoEliminado = product.eliminarProducto(id)
 
     res.json({
+        msg:'Producto eliminado exitosamente',
         productoEliminado
     })
 
