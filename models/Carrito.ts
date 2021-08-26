@@ -1,15 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const pathArchivo = path.resolve(__dirname,'carrito.txt');
+const pathArchivo = path.resolve(__dirname,'../../data','carrito.txt');
 
-interface carrito {
+interface Carro {
   id:number,
   timestamp:number,
-  products:product[]
+  products:Array<Product>
 }
 
-interface product{
+interface Product{
   id:number,
   timestamp:number,
   nombre:string,
@@ -22,12 +22,15 @@ interface product{
 
 export default class Carrito {
 
-  public carrito: Array<carrito>
-  public productos:product[]
+  public carrito:   Array<Carro>
+  public carritoOld:   Array<Carro>
+  public productos: Array<Product>
+ 
 
   constructor(){
    this.carrito = []
-   this.productos = [] 
+   this.carritoOld = []
+   this.productos = []
    this.actualizado()
   }
 
@@ -35,31 +38,66 @@ export default class Carrito {
     const data =  this.readFile()
        if(data){
            const productos = JSON.parse(data)
-           this.carrito = this.carrito.concat(productos) 
+           this.carritoOld = productos
+           this.carrito.push({id:productos.length + 1 ,timestamp:Date.now(),products:this.productos})
+           
        }
+      else {
+      
+        this.carrito.push({id:this.carrito.length + 1 ,timestamp:Date.now(),products:this.productos})
+         
+      }
+  }
+
+  guardar = () => {
+    if(this.carritoOld.length === 0){
+      this.writeFile(this.carrito)
+    }
+    else{
+     const carro = this.carritoOld.concat(this.carrito)
+     this.writeFile(carro)
+      
+    }
   }
 
   eliminarProducto = (id:number) =>{
     const productos = this.productos
+    
     const productosNuevos =  productos.filter(prod => prod.id !== Number(id))
-      this.carrito = productosNuevos
-    this.writeFile()
-    return this.carrito.products
+      this.productos = productosNuevos
+      this.guardar()
+  
   }
 
-  guardar = (producto:product) => {  
-    this.productos.push(producto)
-    this.carrito.products = this.productos
-    this.writeFile()
+  agregarProducto = (product:Array<Product>) => {  
+    
+    this.productos.push(product)
+   
+    this.guardar()
   }
-
+  
+  leerCarroPorId = (id:number) => {
+      const carros : Array<Carro> = this.leer()
+      const carrito = carros.find(prod => prod.id === id )
+      return carrito
+  }
+  
   leer = () =>{  
-    return this.carrito.products
+ 
+   if(this.carritoOld.length === 0){
+     return this.carrito
+   }
+   else {
+     
+      return this.carritoOld.concat(this.carrito)
+   }
   }
 
-  writeFile = () => {
+  writeFile = (carro:Array<Carro>) => {
     try {
-     return fs.writeFileSync(pathArchivo,JSON.stringify(this.carrito,null,'\t'))
+    
+      return fs.writeFileSync(pathArchivo,JSON.stringify(carro,null,'\t'))
+      
     } catch (error) {
       console.log('No se pudo escribir el archivo ', error)
     }

@@ -1,0 +1,12 @@
+[
+	{
+		"nombre": "Lapicera",
+		"descripcion": "Trazo Fino",
+		"codigo": "1234213",
+		"foto": "www.foto.com",
+		"precio": 54,
+		"stock": true,
+		"id": 1,
+		"timestamp": 1629988787816
+	}
+]

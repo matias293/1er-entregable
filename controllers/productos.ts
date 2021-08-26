@@ -20,10 +20,9 @@ export const getProduct = (req:Request,res:Response) => {
 
     const id = Number(req.params.id)
 
-    const productos =  product.leer()
-
-    const productoPorId = productos.find((producto:{id:number}) => producto.id === id)
-
+     
+    const productoPorId = product.findById(id)
+    
     res.json({
         productoPorId
     })

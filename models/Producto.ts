@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const pathArchivo = path.resolve(__dirname,'productos.txt');
+const pathArchivo = path.resolve(__dirname,'../../data','productos.txt');
 
 // id,timestamp,nombre,descripcion,codigo,foto {url} , precio , stock
 
-interface guardar{
+interface Guardar{
   nombre:string,
   descripcion:string,
   codigo:string,
@@ -14,7 +14,7 @@ interface guardar{
   stock:boolean
 }
 
-interface product{
+export interface Product{
   id:number,
   timestamp:number,
   nombre:string,
@@ -27,13 +27,18 @@ interface product{
 
 export default class Producto {
 
-    public productos: Array<product>
+    public productos: Array<Product>
+
   constructor(){
        this.productos = []      
        this.actualizado()
       }
-  find =() =>{
 
+  findById =(id:number)   =>{
+     const  prod =  this.productos
+     const prodById = prod.find(product => product.id === id)
+     
+     return  prodById
   }
   actualizado = () => {
     
@@ -76,7 +81,7 @@ export default class Producto {
 
 }
 
-  guardar (producto:guardar) {
+  guardar (producto:Guardar) {
     
    const prod = {...producto,id:this.productos.length + 1,timestamp:Date.now()}
     this.productos.push(prod)

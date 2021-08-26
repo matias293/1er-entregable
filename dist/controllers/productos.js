@@ -15,8 +15,7 @@ const getProducts = (req, res) => {
 exports.getProducts = getProducts;
 const getProduct = (req, res) => {
     const id = Number(req.params.id);
-    const productos = product.leer();
-    const productoPorId = productos.find((producto) => producto.id === id);
+    const productoPorId = product.findById(id);
     res.json({
         productoPorId
     });

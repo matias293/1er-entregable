@@ -2,10 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const path = require('path');
-const pathArchivo = path.resolve(__dirname, 'productos.txt');
+const pathArchivo = path.resolve(__dirname, '../../data', 'productos.txt');
 class Producto {
     constructor() {
-        this.find = () => {
+        this.findById = (id) => {
+            const prod = this.productos;
+            const prodById = prod.find(product => product.id === id);
+            return prodById;
         };
         this.actualizado = () => {
             const data = this.readFile();

@@ -2,34 +2,55 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const path = require('path');
-const pathArchivo = path.resolve(__dirname, 'carrito.txt');
+const pathArchivo = path.resolve(__dirname, '../../data', 'carrito.txt');
 class Carrito {
     constructor() {
         this.actualizado = () => {
             const data = this.readFile();
             if (data) {
                 const productos = JSON.parse(data);
-                this.carrito = this.carrito.concat(productos);
+                this.carritoOld = productos;
+                this.carrito.push({ id: productos.length + 1, timestamp: Date.now(), products: this.productos });
+            }
+            else {
+                this.carrito.push({ id: this.carrito.length + 1, timestamp: Date.now(), products: this.productos });
+            }
+        };
+        this.guardar = () => {
+            if (this.carritoOld.length === 0) {
+                this.writeFile(this.carrito);
+            }
+            else {
+                const carro = this.carritoOld.concat(this.carrito);
+                this.writeFile(carro);
             }
         };
         this.eliminarProducto = (id) => {
             const productos = this.productos;
             const productosNuevos = productos.filter(prod => prod.id !== Number(id));
-            this.carrito = productosNuevos;
-            this.writeFile();
-            return this.carrito.products;
+            this.productos = productosNuevos;
+            this.guardar();
         };
-        this.guardar = (producto) => {
-            this.productos.push(producto);
-            this.carrito.products = this.productos;
-            this.writeFile();
+        this.agregarProducto = (product) => {
+            this.productos.push(product);
+            this.guardar();
+        };
+        this.leerCarroPorId = (id) => {
+            const carros = this.leer();
+            const carrito = carros.find(prod => prod.id === id);
+            return carrito;
         };
         this.leer = () => {
-            return this.carrito.products;
+            if (this.carritoOld.length === 0) {
+                return this.carrito;
+            }
+            else {
+                return this.carritoOld.concat(this.carrito);
+            }
         };
-        this.writeFile = () => {
+        this.writeFile = (carro) => {
             try {
-                return fs.writeFileSync(pathArchivo, JSON.stringify(this.carrito, null, '\t'));
+                return fs.writeFileSync(pathArchivo, JSON.stringify(carro, null, '\t'));
             }
             catch (error) {
                 console.log('No se pudo escribir el archivo ', error);
@@ -44,6 +65,7 @@ class Carrito {
             }
         };
         this.carrito = [];
+        this.carritoOld = [];
         this.productos = [];
         this.actualizado();
     }

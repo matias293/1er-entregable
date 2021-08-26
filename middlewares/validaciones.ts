@@ -19,6 +19,7 @@ export const checkAdmin = (req: Request, res : Response, next: NextFunction) => 
 
 export const existId = (req:Request,res:Response,next:NextFunction) => {
    const id = Number(req.params.id)
+  
   const products = productos.leer()
 
   const product = products.find((producto:{id:number}) => producto.id === id)
