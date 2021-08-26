@@ -25,7 +25,8 @@ const getProductFromList = (req, res) => {
 exports.getProductFromList = getProductFromList;
 const postProductoId = (req, res) => {
     const id = Number(req.params.id);
-    const product = productos.findById(id);
+    const products = productos.leer();
+    const product = products.find((producto) => producto.id === id);
     carrito.agregarProducto(product);
     res.json({
         msg: 'Producto Agregado al carrito',

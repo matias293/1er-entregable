@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import Producto from '../models/Producto'
+import Producto, { Product } from '../models/Producto'
 import Carrito from '../models/Carrito'
 
 const carrito = new Carrito()
@@ -33,7 +33,10 @@ export const getProductFromList  =(req:Request,res:Response) => {
 export const postProductoId  =(req:Request,res:Response) => {
   const id = Number(req.params.id)
     
-    const product = productos.findById(id)
+    
+    const products = productos.leer()
+
+    const product:Array<Product> = products.find((producto:{id:number}) => producto.id === id)
     
     carrito.agregarProducto(product)
 

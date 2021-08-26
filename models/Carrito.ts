@@ -22,9 +22,9 @@ interface Product{
 
 export default class Carrito {
 
-  public carrito:   Array<Carro>
-  public carritoOld:   Array<Carro>
-  public productos: Array<Product>
+  public carrito:    Array<Carro>
+  public carritoOld: Array<Carro>
+  public productos:  Array<Product>
  
 
   constructor(){
