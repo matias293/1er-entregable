@@ -2,14 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const path = require('path');
+const uuid_1 = require("uuid");
 const pathArchivo = path.resolve(__dirname, '../../data', 'productos.txt');
 class Producto {
     constructor() {
-        this.findById = (id) => {
-            const prod = this.productos;
-            const prodById = prod.find(product => product.id === id);
-            return prodById;
-        };
         this.actualizado = () => {
             const data = this.readFile();
             if (data) {
@@ -17,9 +13,14 @@ class Producto {
                 this.productos = this.productos.concat(mensajes);
             }
         };
+        this.findById = (id) => {
+            const prod = this.productos;
+            const prodById = prod.find(product => product.id === id);
+            return prodById;
+        };
         this.eliminarProducto = (id) => {
             const productos = this.productos;
-            const productoEliminado = productos.filter(prod => prod.id !== Number(id));
+            const productoEliminado = productos.filter(prod => prod.id !== id);
             this.productos = productoEliminado;
             this.writeFile();
             return this.productos;
@@ -39,7 +40,6 @@ class Producto {
         this.leer = () => {
             const data = this.readFile();
             if (!data) {
-                console.log('no exist');
                 return [];
             }
             if (data) {
@@ -65,10 +65,11 @@ class Producto {
             }
         };
         this.productos = [];
+        this.id = 0;
         this.actualizado();
     }
     guardar(producto) {
-        const prod = Object.assign(Object.assign({}, producto), { id: this.productos.length + 1, timestamp: Date.now() });
+        const prod = Object.assign(Object.assign({}, producto), { id: uuid_1.v4(), timestamp: Date.now() });
         this.productos.push(prod);
         this.writeFile();
     }

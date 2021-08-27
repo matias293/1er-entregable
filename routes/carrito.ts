@@ -1,12 +1,12 @@
 import {Router  } from'express';
 import { deleteProductFromList, getLista, getProductFromList, postProductoId } from '../controllers/carrito';
-import { existId } from '../middlewares/validaciones';
+import { existCarrito, existId } from '../middlewares/validaciones';
 
 const router = Router();
 
 router.get('/listar',getLista)
 
-router.get('/listar/:id', getProductFromList)
+router.get('/listar/:id', existCarrito,getProductFromList)
 
 router.post('/agregar/:id', existId,postProductoId )
 

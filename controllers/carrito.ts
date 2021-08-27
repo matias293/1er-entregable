@@ -17,7 +17,7 @@ export const  getLista = (req:Request,res:Response) =>{
 
 
 export const getProductFromList  =(req:Request,res:Response) => {
-      const id = Number(req.params.id)
+      const {id} = req.params
 
       const carro = carrito.leerCarroPorId(id)
 
@@ -31,12 +31,12 @@ export const getProductFromList  =(req:Request,res:Response) => {
 }
 
 export const postProductoId  =(req:Request,res:Response) => {
-  const id = Number(req.params.id)
+  const {id} = req.params
     
     
     const products = productos.leer()
 
-    const product:Array<Product> = products.find((producto:{id:number}) => producto.id === id)
+    const product:Array<Product> = products.find((producto:{id:string}) => producto.id === id)
     
     carrito.agregarProducto(product)
 
@@ -47,7 +47,7 @@ export const postProductoId  =(req:Request,res:Response) => {
 }
 
 export const deleteProductFromList  =(req:Request,res:Response) => {
-  const id = Number(req.params.id)
+  const {id} = req.params
 
    carrito.eliminarProducto(id)
 

@@ -11,11 +11,12 @@ router.get('/listar/:id', [
     validaciones_1.existId,
     validaciones_1.existProd
 ], productos_1.getProduct);
-router.post('/agregar', productos_1.postProduct);
+router.post('/agregar', validaciones_1.bodyValidator, productos_1.postProduct);
 router.put('/actualizar/:id', [
     validaciones_1.checkAdmin,
     validaciones_1.existProd,
-    validaciones_1.existId
+    validaciones_1.existId,
+    validaciones_1.bodyValidator
 ], productos_1.putProduct);
 router.delete('/borrar/:id', [
     validaciones_1.checkAdmin,

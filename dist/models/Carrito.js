@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const path = require('path');
+const uuid_1 = require("uuid");
 const pathArchivo = path.resolve(__dirname, '../../data', 'carrito.txt');
 class Carrito {
     constructor() {
@@ -10,10 +11,10 @@ class Carrito {
             if (data) {
                 const productos = JSON.parse(data);
                 this.carritoOld = productos;
-                this.carrito.push({ id: productos.length + 1, timestamp: Date.now(), products: this.productos });
+                this.carrito.push({ id: uuid_1.v4(), timestamp: Date.now(), products: this.productos });
             }
             else {
-                this.carrito.push({ id: this.carrito.length + 1, timestamp: Date.now(), products: this.productos });
+                this.carrito.push({ id: uuid_1.v4(), timestamp: Date.now(), products: this.productos });
             }
         };
         this.guardar = () => {
@@ -27,8 +28,9 @@ class Carrito {
         };
         this.eliminarProducto = (id) => {
             const productos = this.productos;
-            const productosNuevos = productos.filter(prod => prod.id !== Number(id));
+            const productosNuevos = productos.filter(prod => prod.id !== id);
             this.productos = productosNuevos;
+            this.carrito[0].products = this.productos;
             this.guardar();
         };
         this.agregarProducto = (product) => {

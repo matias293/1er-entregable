@@ -1,43 +1,17 @@
 [
 	{
-		"id": 1,
-		"timestamp": 1629989456882,
+		"id": "067777c0-c639-4eb3-be40-77fe55d7c2f3",
+		"timestamp": 1630078581513,
 		"products": [
 			{
-				"nombre": "Lapicera",
+				"nombre": "calculadora",
 				"descripcion": "Trazo Fino",
 				"codigo": "1234213",
 				"foto": "www.foto.com",
 				"precio": 54,
 				"stock": true,
-				"id": 1,
-				"timestamp": 1629988787816
-			}
-		]
-	},
-	{
-		"id": 2,
-		"timestamp": 1630020486440,
-		"products": [
-			{
-				"nombre": "Lapicera",
-				"descripcion": "Trazo Fino",
-				"codigo": "1234213",
-				"foto": "www.foto.com",
-				"precio": 54,
-				"stock": true,
-				"id": 1,
-				"timestamp": 1629988787816
-			},
-			{
-				"nombre": "Lapicera",
-				"descripcion": "Trazo Fino",
-				"codigo": "1234213",
-				"foto": "www.foto.com",
-				"precio": 54,
-				"stock": true,
-				"id": 1,
-				"timestamp": 1629988787816
+				"id": "f6ea85b2-22e7-4482-8534-ce3641e49028",
+				"timestamp": 1630076869974
 			}
 		]
 	}

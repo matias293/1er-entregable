@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+import { v4 as uuidv4 } from 'uuid';
+
 const pathArchivo = path.resolve(__dirname,'../../data','productos.txt');
 
-// id,timestamp,nombre,descripcion,codigo,foto {url} , precio , stock
+
 
 interface Guardar{
   nombre:string,
@@ -15,7 +17,7 @@ interface Guardar{
 }
 
 export interface Product{
-  id:number,
+  id:string,
   timestamp:number,
   nombre:string,
   descripcion:string,
@@ -28,33 +30,38 @@ export interface Product{
 export default class Producto {
 
     public productos: Array<Product>
+    public id:number
 
   constructor(){
-       this.productos = []      
+       this.productos = []
+       this.id = 0
        this.actualizado()
       }
 
-  findById =(id:number)   =>{
-     const  prod =  this.productos
-     const prodById = prod.find(product => product.id === id)
-     
-     return  prodById
-  }
+  
   actualizado = () => {
     
     const data =  this.readFile()
        if(data){
            const mensajes = JSON.parse(data)
            this.productos = this.productos.concat(mensajes) 
+           
        }
   }
 
-  eliminarProducto = (id:number) =>{
+  findById =(id:string)   =>{
+    const  prod =  this.productos
+    const prodById = prod.find(product => product.id === id)
+    
+    return  prodById
+ }
+  eliminarProducto = (id:string) =>{
     
      const productos = this.productos
 
-     const productoEliminado =  productos.filter(prod => prod.id !== Number(id))
+     const productoEliminado =  productos.filter(prod => prod.id !== id)
         this.productos = productoEliminado
+        
      
      this.writeFile()
      return this.productos
@@ -62,7 +69,7 @@ export default class Producto {
    }
 
   
-  actualizarProducto = (nombre:string,descripcion:string,codigo:string,foto:string,precio:number,stock:boolean,id:number) => {
+  actualizarProducto = (nombre:string,descripcion:string,codigo:string,foto:string,precio:number,stock:boolean,id:string) => {
         
     let productoActualizado
     
@@ -82,10 +89,9 @@ export default class Producto {
 }
 
   guardar (producto:Guardar) {
-    
-   const prod = {...producto,id:this.productos.length + 1,timestamp:Date.now()}
+  
+   const prod = {...producto,id:uuidv4(),timestamp:Date.now()}
     this.productos.push(prod)
-
     this.writeFile()
   }
 
@@ -94,7 +100,7 @@ export default class Producto {
    const data =  this.readFile()
    
       if(!data) {
-        console.log('no exist')
+        
            return []
       }
       if(data){

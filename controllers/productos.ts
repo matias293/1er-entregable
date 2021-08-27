@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-import { v4 as uuidv4 } from 'uuid';
 
 import Producto from '../models/Producto'
 
@@ -18,7 +17,7 @@ export const getProducts = (req:Request,res:Response) => {
 
 export const getProduct = (req:Request,res:Response) => {
 
-    const id = Number(req.params.id)
+    const {id} = req.params
 
      
     const productoPorId = product.findById(id)
@@ -31,7 +30,7 @@ export const getProduct = (req:Request,res:Response) => {
 
 export const putProduct = (req:Request,res:Response) => {
 
-    const id = Number(req.params.id)
+    const {id} = req.params
 
     const {nombre,descripcion,codigo,foto,precio,stock} = req.body
 
@@ -60,7 +59,7 @@ export const postProduct = (req:Request,res:Response) => {
 }
 
 export const deleteProductFromList = (req:Request,res:Response) => {
-    const id = Number(req.params.id)
+    const {id} = req.params
     
 
     const productoEliminado = product.eliminarProducto(id)

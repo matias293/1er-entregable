@@ -14,7 +14,7 @@ const getProducts = (req, res) => {
 };
 exports.getProducts = getProducts;
 const getProduct = (req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
     const productoPorId = product.findById(id);
     res.json({
         productoPorId
@@ -22,7 +22,7 @@ const getProduct = (req, res) => {
 };
 exports.getProduct = getProduct;
 const putProduct = (req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
     const { nombre, descripcion, codigo, foto, precio, stock } = req.body;
     const productoActualizado = product.actualizarProducto(nombre, descripcion, codigo, foto, precio, stock, id);
     res.json({
@@ -40,7 +40,7 @@ const postProduct = (req, res) => {
 };
 exports.postProduct = postProduct;
 const deleteProductFromList = (req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
     const productoEliminado = product.eliminarProducto(id);
     res.json({
         msg: 'Producto eliminado exitosamente',

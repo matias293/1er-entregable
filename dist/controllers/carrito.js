@@ -16,7 +16,7 @@ const getLista = (req, res) => {
 };
 exports.getLista = getLista;
 const getProductFromList = (req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
     const carro = carrito.leerCarroPorId(id);
     res.json({
         carro
@@ -24,7 +24,7 @@ const getProductFromList = (req, res) => {
 };
 exports.getProductFromList = getProductFromList;
 const postProductoId = (req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
     const products = productos.leer();
     const product = products.find((producto) => producto.id === id);
     carrito.agregarProducto(product);
@@ -35,7 +35,7 @@ const postProductoId = (req, res) => {
 };
 exports.postProductoId = postProductoId;
 const deleteProductFromList = (req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
     carrito.eliminarProducto(id);
     res.json({
         msg: 'Producto Eliminado de su carro',

@@ -1,16 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
+import { v4 as uuidv4 } from 'uuid';
+
 const pathArchivo = path.resolve(__dirname,'../../data','carrito.txt');
 
 interface Carro {
-  id:number,
+  id:string,
   timestamp:number,
   products:Array<Product>
 }
 
 interface Product{
-  id:number,
+  id:string,
   timestamp:number,
   nombre:string,
   descripcion:string,
@@ -39,12 +41,12 @@ export default class Carrito {
        if(data){
            const productos = JSON.parse(data)
            this.carritoOld = productos
-           this.carrito.push({id:productos.length + 1 ,timestamp:Date.now(),products:this.productos})
+           this.carrito.push({id:uuidv4() ,timestamp:Date.now(),products:this.productos})
            
        }
       else {
       
-        this.carrito.push({id:this.carrito.length + 1 ,timestamp:Date.now(),products:this.productos})
+        this.carrito.push({id:uuidv4() ,timestamp:Date.now(),products:this.productos})
          
       }
   }
@@ -54,17 +56,20 @@ export default class Carrito {
       this.writeFile(this.carrito)
     }
     else{
+      
      const carro = this.carritoOld.concat(this.carrito)
      this.writeFile(carro)
       
     }
   }
 
-  eliminarProducto = (id:number) =>{
+  eliminarProducto = (id:string) =>{
     const productos = this.productos
-    
-    const productosNuevos =  productos.filter(prod => prod.id !== Number(id))
+     
+    const productosNuevos:Array<Product> =  productos.filter(prod => prod.id !== id)
+      
       this.productos = productosNuevos
+      this.carrito[0].products = this.productos
       this.guardar()
   
   }
@@ -76,7 +81,7 @@ export default class Carrito {
     this.guardar()
   }
   
-  leerCarroPorId = (id:number) => {
+  leerCarroPorId = (id:string) => {
       const carros : Array<Carro> = this.leer()
       const carrito = carros.find(prod => prod.id === id )
       return carrito

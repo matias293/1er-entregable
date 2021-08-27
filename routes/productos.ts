@@ -2,7 +2,7 @@ import {Router  } from'express';
 import {check} from 'express-validator'
 import { deleteProductFromList, getProduct, getProducts, postProduct, putProduct } from '../controllers/productos';
 // import { existId, existProd } from '../helpers/validatorProduct';
-import { checkAdmin,existProd, existId} from '../middlewares/validaciones';
+import { checkAdmin,existProd, existId, bodyValidator} from '../middlewares/validaciones';
 
 
 const router = Router();
@@ -15,12 +15,13 @@ router.get('/listar/:id',[
     existProd
 ] ,getProduct)
 
-router.post('/agregar', postProduct )
+router.post('/agregar', bodyValidator,postProduct )
 
 router.put('/actualizar/:id',[
     checkAdmin,
     existProd,
-    existId
+    existId,
+    bodyValidator
 ] , putProduct)
 
 router.delete('/borrar/:id',[
